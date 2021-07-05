@@ -15,9 +15,7 @@ const HomeNavigator = () => {
         headerTitleStyle: {
           textTransform: 'uppercase',
         },
-        headerTitle: (
-          props, // App Logo
-        ) => (
+        headerTitle: () => (
           <Image
             style={{height: 46}}
             source={require('../assets/images/m.png')}
@@ -25,7 +23,7 @@ const HomeNavigator = () => {
           />
         ),
       }}>
-      <HomeStack.Screen name={LANDING} component={Landing}></HomeStack.Screen>
+      <HomeStack.Screen name={LANDING} component={Landing} />
     </HomeStack.Navigator>
   );
 };
