@@ -7,7 +7,7 @@ interface IProps {
   children?: React.ReactNode;
 }
 
-const Container = ({style, children}:IProps) => {
+const Container = ({style, children}: IProps) => {
   return (
     <ScrollView>
       <View style={[styles.wrapper, style]}>{children}</View>

@@ -8,12 +8,12 @@ export default StyleSheet.create({
     borderRadius: 4,
     paddingHorizontal: 5,
     marginTop: 4,
-    alignItems:"center",
-    alignSelf:"center",
+    alignItems: 'center',
+    alignSelf: 'center',
     width: '80%',
   },
-  label:{
-    alignSelf: "center",
+  label: {
+    alignSelf: 'center',
     width: '80%',
   },
 
@@ -24,11 +24,11 @@ export default StyleSheet.create({
   textInput: {
     flex: 1,
     width: '100%',
-    color: "black",
+    color: 'black',
   },
 
   error: {
-    alignSelf: "center",
+    alignSelf: 'center',
     width: '80%',
     color: colors.danger,
     paddingTop: 4,

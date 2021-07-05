@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, TextInput} from 'react-native';
 import styles from './styles';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import {TextInputProps} from 'react-native';
 import colors from '../../assets/theme/colors';
 
@@ -24,13 +25,19 @@ const Input = ({
   const [focused, setFocused] = React.useState(false);
 
   const getFlexDirection = () => {
-    if (icon && iconPosition === 'left') return 'row';
+    if (icon && iconPosition === 'left') {
+      return 'row';
+    }
     return 'row-reverse';
   };
 
   const getBorderColor = () => {
-    if (error) return colors.danger;
-    if (focused) return "#2BAE66FF";
+    if (error) {
+      return colors.danger;
+    }
+    if (focused) {
+      return '#2BAE66FF';
+    }
     return colors.grey;
   };
 
@@ -53,13 +60,14 @@ const Input = ({
           value={value}
           onFocus={handleFocus}
           onBlur={handleFocus}
-          
           //pasword font glitch fix
-          ref={ref => ref && ref.setNativeProps({ style: { fontFamily: 'Roboto' } })}
+          ref={ref =>
+            ref && ref.setNativeProps({style: {fontFamily: 'Roboto'}})
+          }
           {...props}
         />
       </View>
-      {error ? <Text style={styles.error}>{error}</Text>: null}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
   );
 };

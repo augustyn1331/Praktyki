@@ -4,12 +4,13 @@ import {
   Text,
   TouchableOpacity,
   ActivityIndicator,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   TouchableOpacityProps,
 } from 'react-native';
 import styles from './styles';
 import colors from '../../assets/theme/colors';
 
-interface MyButtonProps extends TouchableOpacityProps{
+interface MyButtonProps extends TouchableOpacityProps {
   disabled?: boolean;
   label: string;
   loading?: boolean;
@@ -17,23 +18,50 @@ interface MyButtonProps extends TouchableOpacityProps{
   width?: 'small' | 'medium';
 }
 
-const CustomButton = ({disabled, loading, label, variant, width, onPress, ...props}: MyButtonProps) => {
+const CustomButton = ({
+  disabled,
+  loading,
+  label,
+  variant,
+  width,
+  onPress,
+}: MyButtonProps) => {
   const getBackgroundColor = () => {
-    if (disabled) return colors.grey;
-    if (variant === 'primary') return colors.primary;
-    if (variant === 'secondary') return colors.secondary;
-    if (variant === 'danger') return colors.danger;
+    if (disabled) {
+      return colors.grey;
+    }
+    if (variant === 'primary') {
+      return colors.primary;
+    }
+    if (variant === 'secondary') {
+      return colors.secondary;
+    }
+    if (variant === 'danger') {
+      return colors.danger;
+    }
   };
   const getColor = () => {
-    if (disabled) return 'black';
-    if (variant === 'primary') return colors.secondary;
-    if (variant === 'secondary') return colors.primary;
-    if (variant === 'danger') return 'black';
+    if (disabled) {
+      return 'black';
+    }
+    if (variant === 'primary') {
+      return colors.secondary;
+    }
+    if (variant === 'secondary') {
+      return colors.primary;
+    }
+    if (variant === 'danger') {
+      return 'black';
+    }
   };
   const getWidth = () => {
-    if (width === 'small') return '45%';
-    if (width === 'medium') return '60%';
-    return "100%";
+    if (width === 'small') {
+      return '45%';
+    }
+    if (width === 'medium') {
+      return '60%';
+    }
+    return '100%';
   };
   const getLoadingPadding = () => {
     return loading ? 5 : 0;
@@ -43,9 +71,15 @@ const CustomButton = ({disabled, loading, label, variant, width, onPress, ...pro
     <TouchableOpacity
       disabled={disabled}
       onPress={onPress}
-      style={[styles.wrapper, {backgroundColor: getBackgroundColor()},{width: getWidth()},]}>
+      style={[
+        styles.wrapper,
+        {backgroundColor: getBackgroundColor()},
+        {width: getWidth()},
+      ]}>
       <View style={[styles.loaderSection]}>
-        {loading && <ActivityIndicator color={getColor()} style={styles.loader}/>}
+        {loading && (
+          <ActivityIndicator color={getColor()} style={styles.loader} />
+        )}
         {label && (
           <Text
             style={[
