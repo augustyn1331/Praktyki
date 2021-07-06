@@ -1,20 +1,26 @@
 import * as React from 'react';
-
 import {accelerometer} from 'react-native-sensors';
 import {useState} from 'react';
-import {Animated, StyleSheet, Text, View, Dimensions} from 'react-native';
-
+import {Animated, StyleSheet, View, Dimensions} from 'react-native';
 interface IState {
   x: number;
   y: number;
 }
-
 const App = () => {
-  const [state, setState] = useState<IState>({x: 0, y: 0});
-  React.useEffect(() => {
-    accelerometer.subscribe(({x, y}) => setState({x, y}));
-  }, []);
+  // const pan: any = React.useRef(new Animated.ValueXY({x: 0, y: 0})).current;
 
+  // const [state, setState] = useState<IState>({x: 0, y: 0});
+  const [state, setState] = useState(new Animated.ValueXY({x: 0, y: 0}));
+  React.useEffect(() => {
+    accelerometer.subscribe(({x, y}) => {
+      var x: number = Math.round(
+        (-1 * (x * Dimensions.get('window').width)) / 20,
+      );
+      var y: number = Math.round((y * Dimensions.get('window').height) / 20);
+      setState(new Animated.ValueXY({x, y}));
+    });
+  }, []);
+  // console.log(state.getTranslateTransform())
   return (
     <View style={styles.wrapper}>
       <View style={styles.border}>
@@ -22,17 +28,14 @@ const App = () => {
           style={[
             styles.ball,
             {
-              transform: [
-                {translateX: state.x * 20},
-                {translateY: state.y * 20},
-              ],
+              transform: state.getTranslateTransform(),
             },
           ]}
         />
       </View>
 
-      <Text>{state.x}</Text>
-      <Text>{state.y}</Text>
+      {/* <Text>{state.x}</Text>
+      <Text>{state.y}</Text> */}
     </View>
   );
 };
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
   },
   border: {
     backgroundColor: 'white',
-    height: '60%',
+    height: '100%',
     width: '100%',
     justifyContent: 'center',
   },
