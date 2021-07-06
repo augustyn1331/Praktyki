@@ -1,41 +1,91 @@
 import * as React from 'react';
 import {accelerometer} from 'react-native-sensors';
-import {useState} from 'react';
-import {Animated, StyleSheet, View, Dimensions} from 'react-native';
+import {StyleSheet, View, Dimensions} from 'react-native';
 interface IState {
   x: number;
   y: number;
 }
-const App = () => {
-  // const pan: any = React.useRef(new Animated.ValueXY({x: 0, y: 0})).current;
+import Animated, {
+  interpolate,
+  useAnimatedStyle,
+  useDerivedValue,
+  useSharedValue,
+  withSpring,
+} from 'react-native-reanimated';
 
-  // const [state, setState] = useState<IState>({x: 0, y: 0});
-  const [state, setState] = useState(new Animated.ValueXY({x: 0, y: 0}));
+const App = () => {
+  const MAX_X = (0.89 * Dimensions.get('window').width) / 2;
+  const MAX_Y = (0.87 * Dimensions.get('window').height) / 2;
+
+  const current = useSharedValue<IState>({x: 0, y: 0});
+  const prev = useSharedValue<IState>({x: 0, y: 0});
+
+  const derivedTranslations = useDerivedValue(() => {
+    'worklet';
+    let newX = prev.value.x + current.value.x * -2;
+    let newY = prev.value.y + current.value.y * 2;
+
+    if (Math.abs(newX) >= MAX_X) {
+      newX = prev.value.x;
+    }
+    if (Math.abs(newY) >= MAX_Y) {
+      newY = prev.value.y;
+    }
+    prev.value = {
+      x: newX,
+      y: newY,
+    };
+    return {
+      x: newX,
+      y: newY,
+    };
+  }, [current.value]);
+
   React.useEffect(() => {
-    accelerometer.subscribe(({x, y}) => {
-      var x: number = Math.round(
-        (-1 * (x * Dimensions.get('window').width)) / 20,
-      );
-      var y: number = Math.round((y * Dimensions.get('window').height) / 20);
-      setState(new Animated.ValueXY({x, y}));
+    const sub = accelerometer.subscribe(({x, y}) => {
+      current.value = {x, y};
     });
-  }, []);
+    return () => {
+      sub.unsubscribe();
+    };
+  }, [current]);
+
+  const AnimatedStyles = {
+    motion: useAnimatedStyle(() => {
+      const inputRange = [-100, 0, 100];
+
+      const outputRange = [-100, 0, 100];
+      return {
+        transform: [
+          {
+            translateX: withSpring(
+              interpolate(derivedTranslations.value.x, inputRange, outputRange),
+              {
+                damping: 12,
+                stiffness: 90,
+              },
+            ),
+          },
+          {
+            translateY: withSpring(
+              interpolate(derivedTranslations.value.y, inputRange, outputRange),
+              {
+                damping: 12,
+                stiffness: 90,
+              },
+            ),
+          },
+        ],
+      };
+    }),
+  };
+
   // console.log(state.getTranslateTransform())
   return (
     <View style={styles.wrapper}>
       <View style={styles.border}>
-        <Animated.View
-          style={[
-            styles.ball,
-            {
-              transform: state.getTranslateTransform(),
-            },
-          ]}
-        />
+        <Animated.View style={[styles.ball, AnimatedStyles.motion]} />
       </View>
-
-      {/* <Text>{state.x}</Text>
-      <Text>{state.y}</Text> */}
     </View>
   );
 };
