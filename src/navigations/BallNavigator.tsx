@@ -1,12 +1,12 @@
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
 import {Image} from 'react-native';
-import {LANDING} from '../constants/RouteNames';
-import Landing from '../screens/Landing';
-const HomeNavigator = () => {
-  const HomeStack = createStackNavigator();
+import {BALL} from '../constants/RouteNames';
+import Ball from '../screens/Ball';
+const BallNavigator = () => {
+  const BallStack = createStackNavigator();
   return (
-    <HomeStack.Navigator
+    <BallStack.Navigator
       screenOptions={{
         headerStyle: {
           backgroundColor: '#e6e7e8',
@@ -23,10 +23,9 @@ const HomeNavigator = () => {
           />
         ),
       }}>
-      <HomeStack.Screen name={LANDING} component={Landing} />
-      {/* <HomeStack.Screen name={BALL} component={Ball} /> */}
-    </HomeStack.Navigator>
+      <BallStack.Screen name={BALL} component={Ball} />
+    </BallStack.Navigator>
   );
 };
 
-export default HomeNavigator;
+export default BallNavigator;
